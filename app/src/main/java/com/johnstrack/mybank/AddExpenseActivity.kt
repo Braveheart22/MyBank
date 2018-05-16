@@ -29,7 +29,7 @@ class AddExpenseActivity : AppCompatActivity() {
                     finish()
                 }
                 .addOnFailureListener { e ->
-                    Log.e("Error", "Could not add data: ${e.localizedMessage}")
+                    Log.e("Error", "Could not add new expense: ${e.localizedMessage}")
                 }
     }
 
