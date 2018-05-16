@@ -20,7 +20,7 @@ class AddExpenseActivity : AppCompatActivity() {
 
         val data = HashMap<String, Any>()
         data["itemName"] = addItemNameText.text.toString()
-        data["price"] = addPriceText.text.toString()
+        data["price"] = addPriceText.text.toString().toDouble()
         data["category"] = addCategoryText.text.toString()
         data["timestamp"] = FieldValue.serverTimestamp()
         data["username"] = "Some User"
@@ -37,3 +37,5 @@ class AddExpenseActivity : AppCompatActivity() {
         finish()
     }
 }
+
+//System.out.println(NumberFormat.getNumberInstance(Locale.US).format(35634646));
