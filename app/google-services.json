@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "54397151538",
+    "firebase_url": "https://mybank-4d28c.firebaseio.com",
+    "project_id": "mybank-4d28c",
+    "storage_bucket": "mybank-4d28c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54397151538:android:6701de5923e551d1",
+        "android_client_info": {
+          "package_name": "com.johnstrack.mybank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54397151538-iod1lhjse5f9dhv4vu1egdbm43j32c2g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.johnstrack.mybank",
+            "certificate_hash": "12d9f5856ec293216ba70a9e01bb5bb69f742ef1"
+          }
+        },
+        {
+          "client_id": "54397151538-r83ljn6cdrfi175lmoa30n8ffk388ieq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqcWjrLo1D8p9N3e5jc0tPi2OUETyt9NE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54397151538-r83ljn6cdrfi175lmoa30n8ffk388ieq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
