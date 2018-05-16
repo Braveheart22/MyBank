@@ -19,7 +19,7 @@ class AddExpenseActivity : AppCompatActivity() {
     fun addExpenseClicked (view: View) {
 
         val data = HashMap<String, Any>()
-        data["itemName"] = addCategoryText.text.toString()
+        data["itemName"] = addItemNameText.text.toString()
         data["price"] = addPriceText.text.toString()
         data["category"] = addCategoryText.text.toString()
         data["timestamp"] = FieldValue.serverTimestamp()
