@@ -2,4 +2,7 @@
     <string name="app_name">MyBank</string>
     <string name="action_settings">Settings</string>
     <string name="this_week">This Week:</string>
+    <string name="log_out">Log Out</string>
+    <string name="clear_expenses">Clear Expenses</string>
+    <string name="delete_expense">delete expense</string>
 </resources>
