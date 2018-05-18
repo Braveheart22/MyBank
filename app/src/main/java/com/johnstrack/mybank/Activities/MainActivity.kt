@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity() {
         expenseListView.adapter = expenseAdapter
         val layoutManager = LinearLayoutManager(this)
         expenseListView.layoutManager = layoutManager
+
+        val loginIntent = Intent(this, LoginActivity::class.java)
+        startActivity(loginIntent)
     }
 
     override fun onResume() {
