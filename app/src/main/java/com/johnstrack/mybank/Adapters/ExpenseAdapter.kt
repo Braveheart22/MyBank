@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.johnstrack.mybank.Models.Expense
 import com.johnstrack.mybank.R
+import java.util.*
 
 /**
  * Created by John on 5/17/2018 at 3:27 PM.
  */
-class ExpenseAdapter(val expenses: ArrayList<Expense>) : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
+class ExpenseAdapter(private val expenses: ArrayList<Expense>) : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.expense_list_view, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.expense_list_view, parent, false)
         return ViewHolder(view)
     }
 
@@ -32,7 +33,7 @@ class ExpenseAdapter(val expenses: ArrayList<Expense>) : RecyclerView.Adapter<Ex
 
         fun bindExpense(expense: Expense) {
             itemName?.text = expense.itemName
-            price?.text = expense.price.toString()
+            price?.text = String.format(Locale.getDefault(),"$%,.2f", expense.price)
         }
     }
 }

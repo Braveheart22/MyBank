@@ -7,13 +7,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.johnstrack.mybank.Adapters.ExpenseAdapter
 import com.johnstrack.mybank.Models.Expense
 import com.johnstrack.mybank.R
 import com.johnstrack.mybank.Utilities.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import java.lang.String.format
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var expenseAdapter: ExpenseAdapter
     private val expenses = arrayListOf<Expense>()
     private val expensesCollectionRef = FirebaseFirestore.getInstance().collection(EXPENSES_REF)
+    private lateinit var expenseListener : ListenerRegistration
     private var runningTotal = 0.00
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,33 +42,46 @@ class MainActivity : AppCompatActivity() {
         expenseListView.adapter = expenseAdapter
         val layoutManager = LinearLayoutManager(this)
         expenseListView.layoutManager = layoutManager
-println("Getting the DATA")
-        expensesCollectionRef.get()
-                .addOnSuccessListener { snapshot ->
-                    for (document in snapshot.documents) {
-                        val data = document.data
-                        println("HERE is the DATA: $data")
-                        val category = data!![CATEGORY] as String
-                        val itemName = data[ITEM_NAME] as String
-                        val price = data[PRICE] as Double
-                        val timestamp = data[TIMESTAMP] as Date
-                        val username = data[USERNAME] as String
+    }
 
-                        val newExpense = Expense(category, itemName, price.toDouble(), timestamp, username)
-                        expenses.add(newExpense)
+    override fun onResume() {
+        super.onResume()
+        setListener()
+    }
 
-                        runningTotal += price
-                    }
+    private fun setListener () {
+        expenseListener = expensesCollectionRef
+                .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+                .whereEqualTo(USERNAME, "Some User")
+                .addSnapshotListener(this) { snapshot, exception ->
+            if (exception != null) {
+                Log.e("Error", "Could nor trerieve expenses: ${exception.localizedMessage}")
+            }
 
-                    expenseAdapter.notifyDataSetChanged()
+            if (snapshot != null) {
+                expenses.clear()
+                runningTotal = 0.00
+                for (document in snapshot.documents) {
+                    val data = document.data
+                    val category = data!![CATEGORY] as String
+                    val itemName = data[ITEM_NAME] as String
+                    val price = data[PRICE] as Double
+                    val timestamp = data[TIMESTAMP] as Date
+                    val username = data[USERNAME] as String
+
+                    val newExpense = Expense(category, itemName, price, timestamp, username)
+                    expenses.add(newExpense)
+
+                    runningTotal += price
                 }
-                .addOnFailureListener { e ->
-                    Log.e("Error", "Could not retrieve expenses: ${e.localizedMessage}")
-                }
+                val totalSpent = findViewById<TextView>(R.id.totalSpentLabel)
+                totalSpent.text = format (Locale.getDefault(),"$%,.2f", runningTotal)
+                expenseAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }

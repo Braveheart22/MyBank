@@ -38,5 +38,3 @@ class AddExpenseActivity : AppCompatActivity() {
         finish()
     }
 }
-
-//System.out.println(NumberFormat.getNumberInstance(Locale.US).format(35634646));
