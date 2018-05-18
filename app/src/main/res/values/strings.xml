@@ -5,4 +5,9 @@
     <string name="log_out">Log Out</string>
     <string name="clear_expenses">Clear Expenses</string>
     <string name="delete_expense">delete expense</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="create_user">Create User</string>
 </resources>
