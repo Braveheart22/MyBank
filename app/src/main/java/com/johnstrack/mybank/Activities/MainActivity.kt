@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 .whereEqualTo(USERNAME, "Some User")
                 .addSnapshotListener(this) { snapshot, exception ->
             if (exception != null) {
-                Log.e("Error", "Could nor trerieve expenses: ${exception.localizedMessage}")
+                Log.e("Error", "Could nor retrieve expenses: ${exception.localizedMessage}")
             }
 
             if (snapshot != null) {
