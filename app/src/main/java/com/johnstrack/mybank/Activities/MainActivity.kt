@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -21,6 +22,8 @@ import java.lang.String.format
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var auth: FirebaseAuth
 
     private lateinit var expenseAdapter: ExpenseAdapter
     private val expenses = arrayListOf<Expense>()
@@ -43,8 +46,12 @@ class MainActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         expenseListView.layoutManager = layoutManager
 
-        val loginIntent = Intent(this, LoginActivity::class.java)
-        startActivity(loginIntent)
+        auth = FirebaseAuth.getInstance()
+
+        if (auth.currentUser == null) {
+            val loginIntent = Intent(this, LoginActivity::class.java)
+            startActivity(loginIntent)
+        }
     }
 
     override fun onResume() {
@@ -89,10 +96,27 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.clear_expenses -> true
-            else -> super.onOptionsItemSelected(item)
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val menuItem = menu?.getItem(0)
+        if (auth.currentUser == null) {
+            menuItem?.title = "Login"
+        } else {
+            menuItem?.title = "Logout"
         }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId == R.id.logout) {
+            if (auth.currentUser == null) {
+                val loginIntent = Intent(this, LoginActivity::class.java)
+                startActivity(loginIntent)
+            } else {
+                auth.signOut()
+            }
+            return true
+        }
+        return false
     }
 }
