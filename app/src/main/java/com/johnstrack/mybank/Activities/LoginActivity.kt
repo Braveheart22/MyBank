@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.johnstrack.mybank.R
 import kotlinx.android.synthetic.main.activity_login.*
@@ -29,6 +30,10 @@ class LoginActivity : AppCompatActivity() {
                 }
                 .addOnFailureListener { e ->
                     Log.e("Error", "Could not login user: ${e.localizedMessage}")
+                    loginEmailText.setText("")
+                    loginEmailText.setFocus
+                    loginPasswordText.setText("")
+                    Toast.makeText(this, "Could not login user: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                 }
     }
 

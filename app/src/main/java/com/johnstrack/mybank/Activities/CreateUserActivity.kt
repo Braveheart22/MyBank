@@ -43,8 +43,8 @@ class CreateUserActivity : AppCompatActivity() {
                             }
 
                     val data = HashMap<String, Any>()
-                    data.put(USERNAME, username)
-                    data.put(DATE_CREATED, FieldValue.serverTimestamp())
+                    data[USERNAME] = username
+                    data[DATE_CREATED] = FieldValue.serverTimestamp()
 
                     FirebaseFirestore.getInstance().collection(USERS_REF).document(result.user.uid)
                             .set(data)

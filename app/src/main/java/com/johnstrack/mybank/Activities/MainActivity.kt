@@ -62,10 +62,10 @@ class MainActivity : AppCompatActivity() {
     private fun setListener () {
         expenseListener = expensesCollectionRef
                 .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
-                .whereEqualTo(USERNAME, "Some User")
+                .whereEqualTo(USERNAME, auth.currentUser?.displayName.toString())
                 .addSnapshotListener(this) { snapshot, exception ->
             if (exception != null) {
-                Log.e("Error", "Could nor retrieve expenses: ${exception.localizedMessage}")
+                Log.e("Error", "Could not retrieve expenses: ${exception.localizedMessage}")
             }
 
             if (snapshot != null) {
@@ -114,6 +114,10 @@ class MainActivity : AppCompatActivity() {
                 startActivity(loginIntent)
             } else {
                 auth.signOut()
+                expenses.clear()
+                runningTotal = 0.00
+                totalSpentLabel.text = format (Locale.getDefault(),"$%,.2f", runningTotal)
+                expenseAdapter.notifyDataSetChanged()
             }
             return true
         }
