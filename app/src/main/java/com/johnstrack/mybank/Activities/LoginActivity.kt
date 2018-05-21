@@ -31,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     Log.e("Error", "Could not login user: ${e.localizedMessage}")
                     loginEmailText.setText("")
-                    loginEmailText.setFocus
                     loginPasswordText.setText("")
                     Toast.makeText(this, "Could not login user: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                 }
