@@ -8,11 +8,13 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.johnstrack.mybank.Adapters.ExpenseAdapter
+import com.johnstrack.mybank.Interfaces.ExpenseDeleteItemClickListener
 import com.johnstrack.mybank.Models.Expense
 import com.johnstrack.mybank.R
 import com.johnstrack.mybank.Utilities.*
@@ -21,7 +23,10 @@ import kotlinx.android.synthetic.main.content_main.*
 import java.lang.String.format
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
+    override fun expenseDeleteItemBtnClicked(expense: Expense) {
+        Toast.makeText(this, "Delete item button pressed: ${expense.itemName}", Toast.LENGTH_SHORT).show()
+    }
 
     lateinit var auth: FirebaseAuth
 
@@ -41,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(addExpenseIntent)
         }
 
-        expenseAdapter = ExpenseAdapter(expenses)
+        expenseAdapter = ExpenseAdapter(expenses, this)
         expenseListView.adapter = expenseAdapter
         val layoutManager = LinearLayoutManager(this)
         expenseListView.layoutManager = layoutManager
