@@ -24,9 +24,6 @@ import java.lang.String.format
 import java.util.*
 
 class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
-    override fun expenseDeleteItemBtnClicked(expense: Expense) {
-        Toast.makeText(this, "Delete item button pressed: ${expense.itemName}", Toast.LENGTH_SHORT).show()
-    }
 
     lateinit var auth: FirebaseAuth
 
@@ -62,6 +59,10 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
     override fun onResume() {
         super.onResume()
         setListener()
+    }
+
+    override fun expenseDeleteItemBtnClicked(expense: Expense) {
+        Toast.makeText(this, "Delete item button pressed: ${expense.itemName}", Toast.LENGTH_SHORT).show()
     }
 
     private fun setListener () {
