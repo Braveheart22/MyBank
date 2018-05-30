@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -63,7 +62,6 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
     }
 
     override fun expenseDeleteItemBtnClicked(expense: Expense) {
-//        Toast.makeText(this, "Delete item button pressed: ${expense.itemName}", Toast.LENGTH_SHORT).show()
         val builder = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.delete_item_dialog, null)
 
@@ -72,10 +70,15 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
                 .setMessage("Are you sure you want to delete this expense item? This cannot be undone.")
                 .setNegativeButton("Cancel"){_,_ ->}
                 .setPositiveButton("Yes"){ _, _ ->
-                    Toast.makeText(this,"Ok, delete the expense.",Toast.LENGTH_SHORT).show()
-                    val expenseRef = expensesCollectionRef.document()
+                    expensesCollectionRef.document(expense.documentId).delete()
+                            .addOnSuccessListener {  }
+                            .addOnFailureListener { exception ->
+                                Log.e("Error", "Could not delete expense: ${exception.localizedMessage}")
+                            }
+                    runningTotal -= expense.price
+                    updateRunningTotal()
                 }
-        val ad = builder.show()
+        builder.show()
     }
 
     private fun setListener () {
@@ -97,15 +100,14 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
                     val price = data[PRICE] as Double
                     val timestamp = data[TIMESTAMP] as Date
                     val username = data[USERNAME] as String
+                    val documentId = document.id
 
-                    val newExpense = Expense(category, itemName, price, timestamp, username)
+                    val newExpense = Expense(category, itemName, price, timestamp, username, documentId)
                     expenses.add(newExpense)
 
                     runningTotal += price
                 }
-                val totalSpent = findViewById<TextView>(R.id.totalSpentLabel)
-                totalSpent.text = format (Locale.getDefault(),"$%,.2f", runningTotal)
-                expenseAdapter.notifyDataSetChanged()
+                updateRunningTotal()
             }
         }
     }
@@ -141,5 +143,11 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
             return true
         }
         return false
+    }
+
+    fun updateRunningTotal () {
+        val totalSpent = findViewById<TextView>(R.id.totalSpentLabel)
+        totalSpent.text = format (Locale.getDefault(),"$%,.2f", runningTotal)
+        expenseAdapter.notifyDataSetChanged()
     }
 }
