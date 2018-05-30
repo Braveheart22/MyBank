@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
             return true
         } else {
             //delete all expenses and update running total
-            //Open "Are  yo sure?" dialog before deleting
+            //Open "Are  you sure?" dialog before deleting
             deleteCollection { success ->
                 if (success) {
                     runningTotal = 0.00
