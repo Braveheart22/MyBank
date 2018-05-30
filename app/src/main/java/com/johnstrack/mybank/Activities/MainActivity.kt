@@ -2,6 +2,7 @@ package com.johnstrack.mybank.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -62,7 +63,19 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
     }
 
     override fun expenseDeleteItemBtnClicked(expense: Expense) {
-        Toast.makeText(this, "Delete item button pressed: ${expense.itemName}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Delete item button pressed: ${expense.itemName}", Toast.LENGTH_SHORT).show()
+        val builder = AlertDialog.Builder(this)
+        val dialogView = layoutInflater.inflate(R.layout.delete_item_dialog, null)
+
+        builder.setView(dialogView)
+                .setTitle("Delete Item?")
+                .setMessage("Are you sure you want to delete this expense item? This cannot be undone.")
+                .setNegativeButton("Cancel"){_,_ ->}
+                .setPositiveButton("Yes"){ _, _ ->
+                    Toast.makeText(this,"Ok, delete the expense.",Toast.LENGTH_SHORT).show()
+                    val expenseRef = expensesCollectionRef.document()
+                }
+        val ad = builder.show()
     }
 
     private fun setListener () {
