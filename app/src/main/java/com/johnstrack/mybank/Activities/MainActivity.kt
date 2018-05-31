@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
                     runningTotal -= expense.price
                     updateRunningTotal()
                 }
+        builder.show()
     }
 
     private fun setListener() {
@@ -145,12 +146,21 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
         } else {
             //delete all expenses and update running total
             //Open "Are  you sure?" dialog before deleting
-            deleteCollection { success ->
-                if (success) {
-                    runningTotal = 0.00
-                    updateRunningTotal()
-                }
-            }
+            val builder = AlertDialog.Builder(this)
+            val dialogView = layoutInflater.inflate(R.layout.delete_item_dialog, null)
+            builder.setView(dialogView)
+                    .setTitle("Delete All Expenses?")
+                    .setMessage("Are you sure you want to delete ALL expense items? This cannot be undone.")
+                    .setNegativeButton("Cancel") { _, _ -> }
+                    .setPositiveButton("Yes") { _, _ ->
+                        deleteCollection { success ->
+                            if (success) {
+                                runningTotal = 0.00
+                                updateRunningTotal()
+                            }
+                        }
+                    }
+            builder.show()
         }
         return false
     }
@@ -169,17 +179,17 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
                 for (document in snapshot) {
                     val docRef = FirebaseFirestore.getInstance().collection(EXPENSES_REF).document(document.id)
                     batch.delete(docRef)
+                    }
+                    batch.commit()
+                            .addOnSuccessListener {
+                                complete(true)
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.e("Error", "Could not delete all expenses: ${exception.localizedMessage}")
+                            }
+                    }
                 }
-                batch.commit()
-                        .addOnSuccessListener {
-                            complete(true)
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.e("Error", "Could not delete all expenses: ${exception.localizedMessage}")
-                        }
-            }
-        }
-                .addOnFailureListener {exception ->
+                .addOnFailureListener { exception ->
                     Log.e("Error", "Could not retrieve all expenses: ${exception.localizedMessage}")
                 }
     }
