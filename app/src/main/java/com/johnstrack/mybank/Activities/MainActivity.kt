@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
         expenseAdapter.notifyDataSetChanged()
     }
 
-    fun deleteCollection(complete: (Boolean) -> Unit) {
+    private fun deleteCollection(complete: (Boolean) -> Unit) {
         val query = expensesCollectionRef.whereEqualTo(USERNAME, auth.currentUser?.displayName.toString())
         query.get().addOnSuccessListener { snapshot ->
             thread {
