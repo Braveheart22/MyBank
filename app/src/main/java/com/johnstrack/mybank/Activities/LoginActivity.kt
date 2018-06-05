@@ -18,6 +18,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         auth = FirebaseAuth.getInstance()
+
+        googleSiginButton.setOnClickListener {
+            
+        }
     }
 
     fun loginButtonClicked (view: View) {
@@ -39,5 +43,9 @@ class LoginActivity : AppCompatActivity() {
     fun createUserButtonClicked (view: View) {
         var createIntent = Intent(this, CreateUserActivity::class.java)
         startActivity(createIntent)
+    }
+
+    fun googleSigninClicked (view: View) {
+
     }
 }
