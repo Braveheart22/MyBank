@@ -6,9 +6,13 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.johnstrack.mybank.R
 import kotlinx.android.synthetic.main.activity_login.*
+
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -18,9 +22,15 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         auth = FirebaseAuth.getInstance()
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+        val googleSigninClient = GoogleSignIn.getClient(this, gso)
 
         googleSiginButton.setOnClickListener {
-            
+
         }
     }
 
