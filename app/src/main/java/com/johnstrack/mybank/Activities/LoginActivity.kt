@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
 
     private val RC_SIGN_IN = 1
     lateinit var auth : FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
-        val googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         googleSiginButton.setOnClickListener {
             val signInIntent = googleSignInClient.signInIntent
@@ -50,7 +52,6 @@ class LoginActivity : AppCompatActivity() {
 
         auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
-                    finish()
                 }
                 .addOnFailureListener { e ->
                     Log.e("Error", "Could not login user: ${e.localizedMessage}")
@@ -60,11 +61,12 @@ class LoginActivity : AppCompatActivity() {
                 }
     }
 
-    public override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-    }
+//    public override fun onStart() {
+//        Log.d("OnSTART DEBUG", "In the OnStart command (should we avoid this?)")
+//        super.onStart()
+//        val currentUser = auth.currentUser
+//        updateUI(currentUser)
+//    }
 
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -101,9 +103,11 @@ class LoginActivity : AppCompatActivity() {
                         updateUI(null)
                     }
                 }
+        finish()
     }
 
     private fun updateUI(user: FirebaseUser?) {
         Log.d("Debug", "You don't really need this... ${user?.uid}")
+        finish()
     }
 }

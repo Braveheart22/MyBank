@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
         expenseListView.layoutManager = layoutManager
 
         auth = FirebaseAuth.getInstance()
-
         if (auth.currentUser == null) {
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivity(loginIntent)
@@ -122,9 +121,9 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         val menuItem = menu?.getItem(0)
         if (auth.currentUser == null) {
-            menuItem?.title = "Login"
+            menuItem?.title = getString(R.string.login)
         } else {
-            menuItem?.title = "Logout"
+            menuItem?.title = getString(R.string.logout)
         }
         return super.onPrepareOptionsMenu(menu)
     }
@@ -144,8 +143,6 @@ class MainActivity : AppCompatActivity(), ExpenseDeleteItemClickListener {
             }
             return true
         } else {
-            //delete all expenses and update running total
-            //Open "Are  you sure?" dialog before deleting
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.delete_item_dialog, null)
             builder.setView(dialogView)
