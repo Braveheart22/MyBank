@@ -59,6 +59,7 @@ class LoginActivity : AppCompatActivity() {
                     loginPasswordText.setText("")
                     Toast.makeText(this, "Could not login user: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                 }
+        finish()
     }
 
 //    public override fun onStart() {
@@ -108,6 +109,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) {
         Log.d("Debug", "You don't really need this... ${user?.uid}")
-        finish()
+//        finish()
     }
 }
